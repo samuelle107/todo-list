@@ -23,6 +23,7 @@ import java.util.Calendar;
 public class TodoAddTaskActivity extends AppCompatActivity implements TodoAddTaskActivityView {
     private TodoAddTaskPresenter presenter;
     private ImageButton datePickerButton;
+    private ImageButton backButton;
     private TextView datePickerText;
     private TodoDao dao;
     private TimePicker timePicker;
@@ -39,6 +40,7 @@ public class TodoAddTaskActivity extends AppCompatActivity implements TodoAddTas
         this.datePickerButton = findViewById(R.id.datePickerButton);
         this.timePicker = findViewById(R.id.timePicker);
         this.addTodoButton = findViewById(R.id.addTodoButton);
+        this.backButton = findViewById(R.id.backButtonAdd);
 
         final Calendar calendar = Calendar.getInstance();
         updateDateView(calendar);
@@ -71,10 +73,10 @@ public class TodoAddTaskActivity extends AppCompatActivity implements TodoAddTas
 
             presenter.onTodoAddClicked(title, note, calendar.getTimeInMillis());
         });
-    }
 
-    public void onBackPress(View v) {
-        presenter.onBackPress();
+        backButton.setOnClickListener(v -> {
+            presenter.onBackPress();
+        });
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.samuelle.todolist.presenter;
 
+
 import com.samuelle.todolist.model.Todo;
 import com.samuelle.todolist.model.TodoDao;
 import com.samuelle.todolist.view.TodoEditTaskActivity;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class TodoEditTaskPresenter {
     private TodoEditTaskActivity view;
@@ -15,7 +17,16 @@ public class TodoEditTaskPresenter {
         this.view = view;
         this.dao = view.getDao();
         this.todo = getTodoById(id);
-        view.updateView(todo.getTitle(), todo.getNote());
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(todo.getDate());
+
+        view.updateView(
+                todo.getTitle(),
+                todo.getNote(),
+                getFormattedDate(),
+                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.MINUTE));
     }
 
     public void onTodoDeleteClicked() {
@@ -31,11 +42,16 @@ public class TodoEditTaskPresenter {
         view.startTodoMainActivity();
     }
 
-    public void onUpdatePress(String title, String note) {
+    public void onUpdatePress(String title, String note, long date) {
         if (!title.isEmpty()) {
-            long date = (new Date()).getTime();
             dao.updateAll(new Todo(todo.getId(), title, note, date));
             view.startTodoMainActivity();
         }
+    }
+
+    private String getFormattedDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM");
+
+        return simpleDateFormat.format(todo.getDate());
     }
 }
