@@ -54,7 +54,7 @@ public class TodoAddTaskActivity extends AppCompatActivity implements TodoAddTas
 
         datePickerButton.setOnClickListener(v -> {
             new DatePickerDialog(
-                    TodoAddTaskActivity.this,
+                    this,
                     currentDate,
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),

@@ -16,6 +16,8 @@ public class Todo {
     private String note;
     @ColumnInfo(name = "date")
     private long date;
+    @ColumnInfo(name = "isDone")
+    private boolean isDone;
 
     @Ignore
     public Todo(int id, String title, String note, long date) {
@@ -23,6 +25,7 @@ public class Todo {
         this.title = title;
         this.note = note;
         this.date = date;
+        this.isDone = false;
     }
 
     public Todo(String title, String note, long date) {
@@ -61,5 +64,13 @@ public class Todo {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
 }

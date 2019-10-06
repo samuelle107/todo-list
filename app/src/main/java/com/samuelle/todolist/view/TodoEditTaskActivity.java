@@ -1,5 +1,6 @@
 package com.samuelle.todolist.view;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import com.samuelle.todolist.base.BaseApplication;
 import com.samuelle.todolist.model.TodoDao;
 import com.samuelle.todolist.presenter.TodoEditTaskPresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditTaskView {
@@ -26,6 +28,7 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
     private ImageButton backButton;
     private TextView datePickerText;
     private TimePicker timepicker;
+    private ImageButton datePickerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +40,30 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
         this.dao = ((BaseApplication) getApplication()).getDatabase().todoDao();
         this.title = findViewById(R.id.todoEditTitleEditScreen);
         this.note = findViewById(R.id.todoEditNoteScreen);
-        this.datePickerText = findViewById(R.id.datePickerText);
+        this.datePickerText = findViewById(R.id.datePickerTextEditScreen);
         this.timepicker = findViewById(R.id.timePickerEditScreen);
-        final Calendar calendar = Calendar.getInstance();
-
+        this.datePickerButton = findViewById(R.id.datePickerButtonEditScreen);
         this.presenter = new TodoEditTaskPresenter(this, getIntent().getIntExtra("id", 0));
+
+        final Calendar calendar = Calendar.getInstance();
+        updateDateView(calendar);
+
+        final DatePickerDialog.OnDateSetListener currentDate = (view, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDateView(calendar);
+        };
+
+        datePickerButton.setOnClickListener(v -> {
+            new DatePickerDialog(
+                    this,
+                    currentDate,
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH))
+                    .show();
+        });
 
         timepicker.setOnTimeChangedListener((view, hour, minute) -> {
             calendar.set(Calendar.HOUR, hour);
@@ -80,6 +102,11 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
         this.datePickerText.setText(dateFormatted);
         this.timepicker.setHour((int) hour);
         this.timepicker.setMinute((int) minute);
+    }
+
+    public void updateDateView(Calendar calendar) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM");
+        datePickerText.setText(simpleDateFormat.format(calendar.getTime()));
     }
 
     @Override
