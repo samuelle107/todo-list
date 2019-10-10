@@ -16,11 +16,11 @@ public interface TodoDao {
     Todo getTodo(int id);
 
     @Insert
-    void insertAll(Todo... todo);
+    long insert(Todo todo);
 
     @Delete
     void delete(Todo todo);
 
     @Update
-    void updateAll(Todo... todo);
+    void update(Todo todo);
 }

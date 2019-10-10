@@ -47,5 +47,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoHolder> {
 
     public interface OnItemListener {
         void onItemClick(int position);
+        void onCheckBoxClick(int position, boolean isChecked);
     }
 }

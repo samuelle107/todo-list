@@ -26,4 +26,14 @@ public class TodoMainPresenter {
     public void navigateToEditTask(int id) {
         view.startTodoEditTaskActivity(id);
     }
+
+    public void onCheckBoxClicked(int id, boolean isChecked) {
+        Todo todo = getTodoById(id);
+        todo.setIsDone(isChecked);
+        dao.update(todo);
+    }
+
+    public Todo getTodoById(int id) {
+        return dao.getTodo(id);
+    }
 }

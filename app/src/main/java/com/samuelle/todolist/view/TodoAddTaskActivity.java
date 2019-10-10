@@ -2,7 +2,10 @@ package com.samuelle.todolist.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +19,7 @@ import com.samuelle.todolist.R;
 import com.samuelle.todolist.base.BaseApplication;
 import com.samuelle.todolist.model.TodoDao;
 import com.samuelle.todolist.presenter.TodoAddTaskPresenter;
+import com.samuelle.todolist.receiver.AlertReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,7 +67,7 @@ public class TodoAddTaskActivity extends AppCompatActivity implements TodoAddTas
         });
 
         timePicker.setOnTimeChangedListener((view, hour, minute) -> {
-            calendar.set(Calendar.HOUR, hour);
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
         });
 

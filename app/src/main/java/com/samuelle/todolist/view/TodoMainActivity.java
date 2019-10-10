@@ -3,10 +3,13 @@ package com.samuelle.todolist.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.samuelle.todolist.R;
@@ -14,6 +17,9 @@ import com.samuelle.todolist.base.BaseApplication;
 import com.samuelle.todolist.model.Todo;
 import com.samuelle.todolist.model.TodoDao;
 import com.samuelle.todolist.presenter.TodoMainPresenter;
+import com.samuelle.todolist.receiver.AlertReceiver;
+
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TodoMainActivity extends AppCompatActivity implements TodoMainActivityView, TodoAdapter.OnItemListener {
@@ -67,7 +73,30 @@ public class TodoMainActivity extends AppCompatActivity implements TodoMainActiv
     }
 
     @Override
+    public void onCheckBoxClick(int position, boolean isChecked) {
+        int id = todoList.get(position).getId();
+
+        presenter.onCheckBoxClicked(id, isChecked);
+    }
+
+    @Override
     public TodoDao getDao() {
         return this.dao;
+    }
+
+    public void sendNotification(View view) {
+        long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
+
+        Intent alertIntent = new Intent(this, AlertReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                alertTime,
+                PendingIntent.getBroadcast(
+                        this,
+                        1,
+                        alertIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT));
     }
 }

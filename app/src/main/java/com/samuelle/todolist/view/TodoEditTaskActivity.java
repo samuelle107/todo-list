@@ -34,6 +34,7 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_edit_task);
+
         this.saveButton = findViewById(R.id.saveTodoButton);
         this.deleteButton = findViewById(R.id.deleteButton);
         this.backButton = findViewById(R.id.backButtonEdit);
@@ -46,14 +47,17 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
         this.presenter = new TodoEditTaskPresenter(this, getIntent().getIntExtra("id", 0));
 
         final Calendar calendar = Calendar.getInstance();
-        updateDateView(calendar);
 
-        final DatePickerDialog.OnDateSetListener currentDate = (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateDateView(calendar);
-        };
+        final DatePickerDialog.OnDateSetListener currentDate = (
+                view,
+                year,
+                monthOfYear,
+                dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, monthOfYear);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    updateDateView(calendar);
+                };
 
         datePickerButton.setOnClickListener(v -> {
             new DatePickerDialog(
@@ -66,7 +70,7 @@ public class TodoEditTaskActivity extends AppCompatActivity implements TodoEditT
         });
 
         timepicker.setOnTimeChangedListener((view, hour, minute) -> {
-            calendar.set(Calendar.HOUR, hour);
+            calendar.set(Calendar.HOUR_OF_DAY, hour);
             calendar.set(Calendar.MINUTE, minute);
         });
 
